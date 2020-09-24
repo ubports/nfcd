@@ -47,7 +47,7 @@
 #include <locale.h>
 
 static const NfcPluginDesc* const nfcd_builtin_plugins[] = {
-#ifndef NO_DBUSACCESS
+#ifndef NO_DBUSLOGSERVER
     &NFC_PLUGIN_DESC(dbus_log),
 #endif
     &NFC_PLUGIN_DESC(dbus_handlers),
