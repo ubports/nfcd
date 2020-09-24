@@ -6,7 +6,10 @@
 # Required packages
 #
 
-PKGS = libdbusaccess libglibutil glib-2.0 gobject-2.0 gio-2.0 gio-unix-2.0
+PKGS = libglibutil glib-2.0 gobject-2.0 gio-2.0 gio-unix-2.0
+ifneq ($(NO_DBUSACCESS),1)
+PKGS += libdbusaccess
+endif
 
 #
 # Default target
@@ -147,6 +150,10 @@ $(COVERAGE_DBUS_NEARD_BUILD_DIR):
 # Setting plugin
 #
 
+ifeq ($(NO_DBUSACCESS),1)
+DEFINES += -DNO_DBUSACCESS
+endif
+
 SETTINGS_DIR = settings
 SETTINGS_PLUGIN_SRC = \
   settings_plugin.c
@@ -234,7 +241,7 @@ $(COVERAGE_DBUS_HANDLERS_BUILD_DIR):
 #
 # D-Bus log plugin
 #
-
+ifneq ($(NO_DBUSLOGSERVER),1)
 PKGS += libdbuslogserver-gio
 
 DBUS_LOG_DIR = dbus_log
@@ -264,7 +271,7 @@ $(RELEASE_DBUS_LOG_BUILD_DIR):
 
 $(COVERAGE_DBUS_LOG_BUILD_DIR):
 	mkdir -p $@
-
+endif
 #
 # Tools and flags
 #

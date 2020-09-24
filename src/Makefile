@@ -9,7 +9,13 @@
 #
 
 PKGS = gio-unix-2.0 gio-2.0 libglibutil
-LIB_PKGS = $(PKGS) libdbusaccess libdbuslogserver-gio
+LIB_PKGS = $(PKGS)
+ifneq ($(NO_DBUSACCESS),1)
+LIB_PKGS += libdbusaccess
+endif
+ifneq ($(NO_DBUSLOGSERVER),1)
+LIB_PKGS += libdbuslogserver-gio
+endif
 
 #
 # Default target
@@ -68,6 +74,9 @@ DEBUG_DEFS = -DDEBUG
 RELEASE_DEFS =
 WARNINGS = -Wall -Wstrict-aliasing -Wunused-result
 DEFINES += -DDEFAULT_PLUGIN_DIR='"$(DEFAULT_PLUGIN_DIR)"'
+ifeq ($(NO_DBUSACCESS),1)
+DEFINES += -DNO_DBUSACCESS
+endif
 INCLUDES = -I. -I$(NFC_CORE_DIR)/include -I$(NFC_PLUGINS_DIR)
 FULL_CFLAGS = -fPIC $(CFLAGS) $(DEFINES) $(WARNINGS) $(INCLUDES) \
   -MMD -MP $(shell pkg-config --cflags $(PKGS))
